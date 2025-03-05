@@ -43,19 +43,22 @@ export class Server{
             if (!existingSocket) {
                 this.activeSockets.push(socket.id);
                 
-                // send the event to the current user
+                // send the list of active users except current user to the current client
                 socket.emit("update-user-list", {
                     users: this.activeSockets.filter(
                         existingSocket => existingSocket !== socket.id
                     )
                 });
         
+                // send new user's id to all the clients except current client
                 socket.broadcast.emit("update-user-list", {
                     users: [socket.id]
                 });
             }
 
             socket.on('disconnect', ()=>{
+                console.log(`Socket Disconnected: ${socket.id}`);
+                
                 this.activeSockets=this.activeSockets.filter(
                     existingSocket=>existingSocket!==socket.id
                 );

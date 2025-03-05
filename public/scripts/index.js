@@ -7,30 +7,31 @@ const { RTCPeerConnection, RTCSessionDescription}=window;
 
 const peerConnection=new RTCPeerConnection();
 
-peerConnection.ontrack=function({strams: [strams]}){
-    const remoteVideo=document.getElementById('remote-video');
-    if(remoteVideo){
-        remoteVideo.srcObject=stream;
+peerConnection.ontrack = function({ streams: [stream] }) {
+    const remoteVideo = document.getElementById('remote-video');
+    if (remoteVideo) {
+        remoteVideo.srcObject = stream;
     }
-}
+};
 
 navigator.getUserMedia(
     { video: true, audio: true },
     stream => {
-        const localVideo = document.getElementById("local-video");
-        if (localVideo) {
-            localVideo.srcObject = stream;
-        }
-
-        stream.getTracks().forEach(track=>peerConnection.addTrack(track, stream));
-    },
-    error => {
-        console.warn(error.message);
+    const localVideo = document.getElementById("local-video");
+    if (localVideo) {
+    localVideo.srcObject = stream;
     }
+
+    stream.getTracks().forEach(track => peerConnection.addTrack(track, stream));
+},
+error => {
+    console.warn(error.message);
+}
 );
 
 async function callUser(socketId){
     const offer=await peerConnection.createOffer();
+    console.log('Offer:', offer);
     await peerConnection.setLocalDescription(new RTCSessionDescription(offer));
     socket.emit('call-user', {
         offer,
@@ -51,7 +52,7 @@ function createItemContainer(socketId){
     userContainerEl.appendChild(usernameEl);
 
     userContainerEl.addEventListener('click', ()=>{
-        unselectUsersFromList();
+        // unselectUsersFromList();
         userContainerEl.setAttribute('class', "active-user active-user--selected");
         const talkingWithInfo=document.getElementById("talking-with-info");
         talkingWithInfo.innerHTML=`Talking with: "Scoket: ${socketId}"`;
@@ -74,7 +75,7 @@ function updateUserList(socketIds){
     });
 }
 
-const socket = io.connect("localhost:5555");
+const socket = io.connect("http://localhost:5555");
 
 socket.on('update-user-list', ({users})=>{
     updateUserList(users);
