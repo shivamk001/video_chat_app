@@ -2,9 +2,12 @@
   "name": "video_chat_app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node src/index.ts",
+    "dev": "nodemon src/index.ts",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -16,5 +19,18 @@
   "bugs": {
     "url": "https://github.com/shivamk001/video_chat_app/issues"
   },
-  "homepage": "https://github.com/shivamk001/video_chat_app#readme"
+  "homepage": "https://github.com/shivamk001/video_chat_app#readme",
+  "dependencies": {
+    "express": "^4.21.2",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.9",
+    "@types/socket.io": "^3.0.1",
+    "concurrently": "^9.1.2",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  }
 }
